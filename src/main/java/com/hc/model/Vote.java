@@ -12,6 +12,7 @@ import java.util.Set;
 @Table(name = "vote")
 public class Vote implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String title;
     private String description;
@@ -20,10 +21,11 @@ public class Vote implements Serializable {
     private Date createTime;
     private Date startTime;
     private Date endTime;
+
     @ManyToOne(targetEntity = User.class)
     private User user;
 
-    @OneToMany(targetEntity = Choice.class,fetch = FetchType.EAGER,mappedBy = "vote")
+    @OneToMany(targetEntity = Choice.class, mappedBy = "vote", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Choice> choices;
 
     public Vote() {
@@ -128,5 +130,23 @@ public class Vote implements Serializable {
                 ", endTime=" + endTime +
                 ", user=" + user +
                 '}';
+    }
+
+    public void increParNumber() {
+        this.participateNumber ++;
+    }
+
+    public Vote(String title,
+                String description,
+                int participateNumber,
+                boolean isMultiple,
+                Date createTime, Date startTime, Date endTime) {
+        this.title = title;
+        this.description = description;
+        this.participateNumber = participateNumber;
+        this.isMultiple = isMultiple;
+        this.createTime = createTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 }

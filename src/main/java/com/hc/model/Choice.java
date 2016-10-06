@@ -29,7 +29,7 @@ public class Choice implements Serializable {
         return id;
     }
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
@@ -58,6 +58,10 @@ public class Choice implements Serializable {
 
     }
 
+    public void increNumber() {
+        this.number ++;
+    }
+
     @Override
     public String toString() {
         return "Choice{" +
@@ -66,5 +70,16 @@ public class Choice implements Serializable {
                 ", number=" + number +
                 ", vote=" + vote +
                 '}';
+    }
+
+    public Choice(String name, int number) {
+        this.name = name;
+        this.number = number;
+    }
+
+    public Choice(String name, int number, Vote vote) {
+        this.name = name;
+        this.number = number;
+        this.vote = vote;
     }
 }

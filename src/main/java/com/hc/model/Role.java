@@ -18,7 +18,7 @@ public class Role implements Serializable, GrantedAuthority {
     @Column(name = "name",nullable = false)
     private String name;
 
-    @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER, mappedBy = "roles")
+    @ManyToMany(targetEntity = User.class, mappedBy = "roles")
     private Set<User> users;
 
     public String getName() {

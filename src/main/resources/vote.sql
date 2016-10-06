@@ -33,9 +33,9 @@ DROP TABLE IF EXISTS `choice`;
 CREATE TABLE IF NOT EXISTS `choice`
 (
   `id` BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `name` VARCHAR(40) NOT NULL UNIQUE ,
+  `name` VARCHAR(40) NOT NULL ,
   `number` INT NOT NULL DEFAULT 0,
-  `vote_id` BIGINT NOT NULL ,
+  `vote_id` BIGINT ,
   CONSTRAINT `fk_vote_id` FOREIGN KEY (`vote_id`) REFERENCES vote(`id`)
 )CHARSET = utf8;
 
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `users_roles`
   CONSTRAINT `fk_role_id_many` FOREIGN KEY (`role_id`) REFERENCES role(`id`)
 );
 
-INSERT INTO `user` VALUES (1001,'2014010908013','123456','hexi',now(),now(),'192.168.1.103');
+INSERT INTO `user` VALUES (1001,'2014010908013','f51703256a38e6bab3d9410a070c32ea','hexi',now(),now(),'192.168.1.103');
 
 INSERT INTO `vote` VALUES (101,'班级聚餐投票','聚餐投票希望大家踊跃参与！',0,0,now(),now(),now()+10000000,1001),
                           (102,'班委选举投票','班委选举投票,希望大家踊跃参与',0,0,now(),now(),now()+10000000,1001);
@@ -66,6 +66,11 @@ INSERT INTO `choice` VALUES (1,'好伦哥',0,101)
   ,(3,'XXX1',0,102)
   ,(4,'XXX2',0,102);
 
-INSERT INTO `role` VALUES (10000,'creater'),(10001,'admin'),(10002,'user');
+INSERT INTO `role` VALUES (10000,'ROLE_CREATOR'),(10001,'ROLE_ADMIN'),(10002,'ROLE_USER');
 
 INSERT INTO `users_roles` VALUES (1001,10000),(1001,10001),(1001,10002);
+#
+# INSERT INTO `vote`(`title`,`description`,`participate_number`,`is_multiple`,`create_time`,`start_time`,`end_time`,`user_id`)
+#     VALUES ('hhhhhh','aaaaaa',0,0,now(),now(),'2016-12-01 06:11:50',1001);
+#
+# INSERT INTO `choice`(`name`,`number`,`vote_id`) VALUES ('nnnn',10,109);

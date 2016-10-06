@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+</head>
+<body>
+    <h2 th:text="${vote.title}"></h2>
+    <h3 th:text="${vote.description}"></h3>
+    <h5 th:text="'该投票开始时间：'+${startTime}"></h5>
+    <h5 th:text="'该投票结束时间：'+${endTime}"></h5>
+    <h5 th:text="'该投票共有 '+${vote.participateNumber}+' 次参与'"></h5>
+    <table>
+        <thead>
+            <tr>
+                <th>选项</th>
+                <th>票数</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="choice : ${vote.choices}">
+                <td th:text="${choice.name}"></td>
+                <td th:text="${choice.number}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/}" href="index.html">返回查看更多投票</a>
+</body>
+</html>

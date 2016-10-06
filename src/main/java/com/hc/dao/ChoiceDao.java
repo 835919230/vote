@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by hexi on 16-10-3.
  */
 @Component("choiceDao")
+@Transactional
 public interface ChoiceDao extends JpaRepository<Choice,Long> {
     @Modifying
     @Query("update Choice c set c.number=c.number+1 where c.name = :name")

@@ -1,5 +1,7 @@
 package com.hc.util;
 
+import com.hc.model.Vote;
+
 import java.util.Date;
 
 /**
@@ -41,5 +43,10 @@ public class TimeUtils {
     public static Date afterDay(long day) {
         Date now = new Date();
         return new Date(now.getTime() + getDays(day));
+    }
+
+    public static boolean isNotExpired(Vote vote) {
+        long now = new Date().getTime();
+        return now >= vote.getStartTime().getTime() && now <= vote.getEndTime().getTime();
     }
 }

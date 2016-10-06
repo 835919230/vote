@@ -1,5 +1,6 @@
 package com.hc;
 
+import com.hc.dao.ChoiceDao;
 import com.hc.dao.UserDao;
 import com.hc.dao.VoteDao;
 import com.hc.model.Choice;
@@ -29,6 +30,9 @@ public class VoteApplicationTests {
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    ChoiceDao choiceDao;
 
 	@Test
 	public void contextLoads() {
@@ -132,6 +136,21 @@ public class VoteApplicationTests {
         for (GrantedAuthority authority:authorities) {
             System.out.println(authority.getAuthority());
         }
+    }
+
+    @Test
+    public void oneToMany() {
+        Vote vote = new Vote("insertTitle","insertDesc",0,false,new Date(),new Date(),TimeUtils.afterDay(7L));
+        Choice choice1 = new Choice("choice1",0,vote);
+        Choice choice2 = new Choice("choice2",0,vote);
+        User user = userDao.findByUsername("2014010908013");
+        vote.setUser(user);
+        Set<Choice> choices = new HashSet<>();
+        choices.add(choice1);
+        choices.add(choice2);
+        vote.setChoices(choices);
+        Vote vote1 = voteDao.save(vote);
+
     }
 
 }

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>大八班投票网</title>
+</head>
+<body>
+    <h3 th:text="${msg}" style="color: red;"></h3>
+    <form th:action="@{/publish/action}" th:method="post">
+        <input type="text" id="voteTitle" name="voteTitle" placeholder="在这里输入该投票标题" value="newTitle"/><br/>
+        <input type="text" id="voteDesc" name="voteDesc" placeholder="在这里输入该投票的描述" value="newDesc"/><br/>
+        <input type="date" id="voteEndDate" name="voteEndDate" value="2016-12-10"/><br/>
+        <input type="text" name="choice" class="choice" placeholder="请输入选项名称" value="choiceName"/><a href="javascript:void(0)">添加选项</a><br/>
+        <input type="checkbox" name="isMultiple" value="true"/><span>是否多选</span><br/>
+        <input type="submit" value="提交" id="submitBtn"/>
+    </form>
+</body>
+</html>

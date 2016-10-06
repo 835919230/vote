@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>大八班投票网</title>
+</head>
+<body>
+    <h2>登录页面</h2>
+    <form th:action="@{/login}" action="/login" method="post">
+        <input type="text" name="username" value="2014010908013" placeholder="请输入您的帐号"/><br/>
+        <input type="password" name="password" value="123456" placeholder="请输入您的密码"/><br/>
+        <input type="checkbox" name="rememberMe" value="true"/><span>记住我一周</span><br/>
+        <input type="submit" value="登录"/><br/>
+        <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
+    </form>
+</body>
+</html>

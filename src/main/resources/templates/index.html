@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>大八班投票网</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>投票名</th>
+                <th>参与次数</th>
+                <th>点击进入</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="vote : ${votes}">
+                <td th:text="${vote.title}">投票名</td>
+                <td th:text="${vote.participateNumber}">参与人数</td>
+                <td> <a th:href="@{/vote/__${vote.id}__}" href="vote_detail.html">点我！</a> </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

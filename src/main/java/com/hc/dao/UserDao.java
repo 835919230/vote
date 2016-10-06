@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by hexi on 16-10-3.
  */
 @Component("userDao")
+@Transactional
 public interface UserDao extends JpaRepository<User,Long> {
     @Modifying
     @Query("update User u set u.nickname=?2 where u.id=?1")

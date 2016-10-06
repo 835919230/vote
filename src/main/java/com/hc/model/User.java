@@ -1,9 +1,11 @@
 package com.hc.model;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.security.auth.Subject;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -14,7 +16,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "user")
-public class User implements Serializable, UserDetails {
+public class User implements Serializable, UserDetails, Authentication {
     @Id
     @GeneratedValue
     private long id;
@@ -31,7 +33,7 @@ public class User implements Serializable, UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private Set<Role> roles;
 
-    @OneToMany(targetEntity = Vote.class,cascade = CascadeType.ALL, mappedBy = "user",fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Vote.class,cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Vote> votes;
 
     public User() {
@@ -122,6 +124,17 @@ public class User implements Serializable, UserDetails {
                 '}';
     }
 
+    // UserDetail properties
+    @Override
+    public String getName() {
+        return this.nickname;
+    }
+
+    @Override
+    public boolean implies(Subject subject) {
+        return false;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -145,5 +158,44 @@ public class User implements Serializable, UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles;
+    }
+
+    //Authentication properties
+    @Override
+    public Object getCredentials() {
+        return password;
+    }
+
+    @Override
+    public Object getDetails() {
+        return lastLoginIp;
+    }
+
+    @Override
+    public Object getPrincipal() {
+        return username;
+    }
+
+    @Override
+    public boolean isAuthenticated() {
+        return true;
+    }
+
+    @Override
+    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 }
