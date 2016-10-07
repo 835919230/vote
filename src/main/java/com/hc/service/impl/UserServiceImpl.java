@@ -82,12 +82,12 @@ public class UserServiceImpl implements UserService,
                 try {
                     request.setAttribute("USER", user);
                     onAuthenticationSuccess(request, response, auth);
+                    return user;
                 } catch (IOException e) {
                     logger.error("IOException In verifyUser:{}",e);
                 } catch (ServletException e) {
                     logger.error("ServletException In verifyUser:{}",e);
                 }
-                return user;
             }
         }
         throw new LoginFailException("没有验证成功，请检查用户名或密码");
