@@ -9,7 +9,7 @@
     <form th:action="@{/publish/action}" th:method="post">
         <input type="text" id="voteTitle" name="voteTitle" placeholder="在这里输入该投票标题" value="newTitle"/><br/>
         <input type="text" id="voteDesc" name="voteDesc" placeholder="在这里输入该投票的描述" value="newDesc"/><br/>
-        <input type="date" id="voteEndDate" name="voteEndDate" value="2016-12-10"/><br/>
+        <input type="datetime-local" id="voteEndDate" name="voteEndDate" value="2016-12-10T00:12"/><br/>
         <input type="text" name="choice" class="choice" placeholder="请输入选项名称" value="choiceName"/><a href="javascript:void(0)">添加选项</a><br/>
         <input type="checkbox" name="isMultiple" value="true"/><span>是否多选</span><br/>
         <input type="submit" value="提交" id="submitBtn"/>

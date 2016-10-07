@@ -16,8 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 public class ExceptionResolver implements HandlerExceptionResolver {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Override
-    public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
-        logger.error("error like this:",e);
+    public ModelAndView resolveException(HttpServletRequest httpServletRequest,
+                                         HttpServletResponse httpServletResponse,
+                                         Object o, Exception e) {
+        logger.error("发生的错误如下所示:",e);
         return null;
     }
 }

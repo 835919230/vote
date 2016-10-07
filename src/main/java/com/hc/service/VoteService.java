@@ -12,7 +12,7 @@ import java.util.List;
 public interface VoteService {
     List<Vote> listAll();
     Vote findVoteById(long id);
-    Vote updateChoiceNumber(long choiceId);
+    Vote updateChoiceNumber(Long[] choiceIds);
 
     Vote addAVote(HttpServletRequest request);
 }

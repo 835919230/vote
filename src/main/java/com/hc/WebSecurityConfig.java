@@ -1,12 +1,15 @@
 package com.hc;
 
-import com.hc.service.impl.RememberMeServiceImpl;
+import com.hc.dao.UserDao;
+import com.hc.model.User;
 import com.hc.service.impl.UserServiceImpl;
 import com.hc.util.TimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,9 +18,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.RememberMeServices;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by hexi on 16-10-3.
@@ -28,17 +40,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
 
-    @Bean
-    public UserDetailsService _userDetailsService() {
-        logger.info("UserDetailsService 启动了");
-        return new UserServiceImpl();
-    }
+    @Autowired
+    @Qualifier("userDao")
+    private UserDao userDao;
 
-    @Bean
-    public RememberMeServices rememberMeServices() {
-        logger.info("RememberMeServices 启动了");
-        return new RememberMeServiceImpl();
-    }
+    @Autowired
+    private UserServiceImpl userService;
+
 
     /**
      * Url权限认证
@@ -60,6 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .loginPage("/login")
                 .loginProcessingUrl("/login/post")
+                .successHandler(userService)
                 .failureUrl("/login?error")
                 .defaultSuccessUrl("/admin")
                 .permitAll()
@@ -73,9 +82,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                 .tokenValiditySeconds(((int) TimeUtils.getDays(7L)))
                 .key("key_rememberMe")
+//                .rememberMeCookieName("key_rememberMe")
+//                .rememberMeParameter(((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal()))
+//                .authenticationSuccessHandler()
                 .alwaysRemember(false)
-                .rememberMeServices(rememberMeServices())
-                .userDetailsService(_userDetailsService())
+                .rememberMeServices(userService)
+                .userDetailsService(userService)
         ;
     }
 
@@ -89,20 +101,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        super.configure(auth);
         logger.info("----------------------------configure---------------------");
         auth
-                .userDetailsService(_userDetailsService())
-                .passwordEncoder(new PasswordEncoder() {
-                    @Override
-                    public String encode(CharSequence rawPassword) {
-                        return new Md5Hash(rawPassword,Md5Hash.ALGORITHM_NAME).toHex();
-                    }
-
-                    @Override
-                    public boolean matches(CharSequence rawPassword, String encodedPassword) {
-                        return StringUtils.equals(new Md5Hash(rawPassword, Md5Hash.ALGORITHM_NAME).toHex(), encodedPassword);
-                    }
-                })
+                .userDetailsService(userService)
         .and()
-                .eraseCredentials(true);
+                .eraseCredentials(true)
+        ;
     }
 
     @Override

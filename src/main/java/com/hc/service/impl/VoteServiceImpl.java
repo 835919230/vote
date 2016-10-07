@@ -9,6 +9,7 @@ import com.hc.model.Vote;
 import com.hc.service.VoteService;
 import com.hc.util.TimeUtils;
 import com.hc.web.controller.VoteController;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by hexi on 16-10-5.
@@ -58,16 +56,22 @@ public class VoteServiceImpl implements VoteService {
 
     @Transactional
     @Override
-    public Vote updateChoiceNumber(long choiceId) {
-        if (choiceId <= 0L)
-            return null;
-        Choice one = choiceDao.findOne(choiceId);
-        if (!TimeUtils.isNotExpired(one.getVote()))
-            return null;
-        if (one != null) {
-            one.increNumber();
-            choiceDao.save(one);
-            Vote vote = one.getVote();
+    public Vote updateChoiceNumber(Long[] choiceIds) {
+        if (ArrayUtils.isNotEmpty(choiceIds)) {
+            List<Choice> choicesToUpdate = new ArrayList<>();
+            for (Long choiceId : choiceIds) {
+                if (choiceId == null || choiceId <= 0L)
+                    return null;
+                Choice one = choiceDao.findOne(choiceId);
+                if (!TimeUtils.isNotExpired(one.getVote()))
+                    return null;
+                if (one != null) {
+                    one.increNumber();
+                    choicesToUpdate.add(one);
+                }
+            }
+            choiceDao.save(choicesToUpdate);
+            Vote vote = choicesToUpdate.get(0).getVote();
             vote.increParNumber();
             voteDao.save(vote);
             return vote;

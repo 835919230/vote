@@ -29,7 +29,7 @@ public class User implements Serializable, UserDetails, Authentication {
 
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns =
-            {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            {@JoinColumn(name = "user_id", referencedColumnName = "id" )},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private Set<Role> roles;
 
@@ -132,7 +132,9 @@ public class User implements Serializable, UserDetails, Authentication {
 
     @Override
     public boolean implies(Subject subject) {
-        return false;
+        if (subject == null)
+            return false;
+        return subject.getPrincipals().contains(this.username);
     }
 
     @Override

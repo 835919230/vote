@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `users_roles`
   CONSTRAINT `fk_role_id_many` FOREIGN KEY (`role_id`) REFERENCES role(`id`)
 );
 
-INSERT INTO `user` VALUES (1001,'2014010908013','f51703256a38e6bab3d9410a070c32ea','hexi',now(),now(),'192.168.1.103');
+INSERT INTO `user` VALUES (1001,'2014010908013','3fb2941334f6e9bb498ed1243b55285c','hexi',now(),now(),'192.168.1.103');
 
 INSERT INTO `vote` VALUES (101,'班级聚餐投票','聚餐投票希望大家踊跃参与！',0,0,now(),now(),now()+10000000,1001),
                           (102,'班委选举投票','班委选举投票,希望大家踊跃参与',0,0,now(),now(),now()+10000000,1001);

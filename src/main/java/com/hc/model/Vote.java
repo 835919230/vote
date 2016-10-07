@@ -25,7 +25,7 @@ public class Vote implements Serializable {
     @ManyToOne(targetEntity = User.class)
     private User user;
 
-    @OneToMany(targetEntity = Choice.class, mappedBy = "vote", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Choice.class, mappedBy = "vote", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Choice> choices;
 
     public Vote() {

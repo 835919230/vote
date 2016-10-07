@@ -5,6 +5,7 @@
     <title></title>
 </head>
 <body>
+    <h2 th:text="${success_message}" style="color: darkgreen;"></h2>
     <h2 th:text="${vote.title}"></h2>
     <h3 th:text="${vote.description}"></h3>
     <h5 th:text="'该投票开始时间：'+${startTime}"></h5>
