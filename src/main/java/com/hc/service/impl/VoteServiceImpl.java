@@ -90,7 +90,7 @@ public class VoteServiceImpl implements VoteService {
         String isMultipleString = request.getParameter("isMultiple");
         Vote vote = null;
         if (StringUtils.isNoneEmpty(voteTitle,voteDesc,voteEndDate) && choiceNames != null) {
-            boolean isMultiple = isMultipleString == null;
+            boolean isMultiple = isMultipleString != null;
             vote = new Vote(voteTitle, voteDesc, 0, isMultiple, new Date(), new Date(), TimeUtils.afterDay(7L));
             // TODO: 16-10-6 暂时规定7天，看情况改
             HttpSession session = request.getSession();
@@ -99,9 +99,10 @@ public class VoteServiceImpl implements VoteService {
             String username = (String) context.getAuthentication().getPrincipal();
             User user = userDao.findByUsername(username);
             vote.setUser(user);
-            Set<Choice> choices = new HashSet<>();
+            List<Choice> choices = new ArrayList<>();
             for (String choiceName : choiceNames) {
                 Choice choice = new Choice(choiceName, 0, vote);
+                logger.info("chooiceName:{}",choiceName);
                 choices.add(choice);
             }
             vote.setChoices(choices);

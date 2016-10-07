@@ -3,6 +3,7 @@ package com.hc.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,7 +27,8 @@ public class Vote implements Serializable {
     private User user;
 
     @OneToMany(targetEntity = Choice.class, mappedBy = "vote", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Choice> choices;
+    @OrderBy("id")
+    private List<Choice> choices;
 
     public Vote() {
 
@@ -99,11 +101,11 @@ public class Vote implements Serializable {
         return endTime;
     }
 
-    public Set<Choice> getChoices() {
+    public List<Choice> getChoices() {
         return choices;
     }
 
-    public void setChoices(Set<Choice> choices) {
+    public void setChoices(List<Choice> choices) {
         this.choices = choices;
     }
 
